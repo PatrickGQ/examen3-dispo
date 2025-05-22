@@ -70,8 +70,18 @@ fun PlanCard(plan: Plan) {
 
             Button(
                 onClick = {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/59172726315"))
-                    context.startActivity(intent)
+                    /*val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/59172726315"))
+                    context.startActivity(intent)*/
+                    val message = "Hola, UCB mobile, preciso su ayuda"
+                    val phoneNumber = "59172726315" // sin el '+'
+                    val url = "https://wa.me/$phoneNumber?text=${Uri.encode(message)}"
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+
+                    try {
+                        context.startActivity(intent)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF25D366))
