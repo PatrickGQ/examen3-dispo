@@ -12,12 +12,24 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun EnviarSimScreen(navController: NavController) {
     var telefono by remember { mutableStateOf("") }
     var latitud by remember { mutableStateOf("") }
     var longitud by remember { mutableStateOf("") }
+    var selectedPosition by remember { mutableStateOf<LatLng?>(null) }
+    val isFormValid = telefono.isNotBlank() && latitud.isNotBlank() && longitud.isNotBlank()
+
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(LatLng(-17.7833, -63.1821), 13f)
+    }
 
     Column(
         modifier = Modifier
@@ -72,15 +84,23 @@ fun EnviarSimScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Aquí irá el Mapa
-        Box(
+        GoogleMap(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(250.dp)
-                .padding(8.dp),
-            contentAlignment = Alignment.Center
+                .height(250.dp),
+            cameraPositionState = cameraPositionState,
+            onMapClick = { latLng ->
+                selectedPosition = latLng
+                latitud = latLng.latitude.toString()
+                longitud = latLng.longitude.toString()
+            }
         ) {
-            Text("Aquí irá el mapa", color = MaterialTheme.colorScheme.onSurfaceVariant)
+            selectedPosition?.let {
+                Marker(
+                    state = MarkerState(position = it),
+                    title = "Ubicación seleccionada"
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -88,7 +108,7 @@ fun EnviarSimScreen(navController: NavController) {
         Button(
             onClick = { /* Acción de continuar */ },
             modifier = Modifier.fillMaxWidth(),
-            enabled = false
+            enabled = isFormValid
         ) {
             Text("Continuar")
         }
