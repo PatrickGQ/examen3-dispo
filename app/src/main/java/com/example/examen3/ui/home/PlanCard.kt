@@ -30,7 +30,7 @@ import androidx.compose.material3.Icon
 import com.example.examen3.R
 
 @Composable
-fun PlanCard(plan: Plan) {
+fun PlanCard(plan: Plan, onSelectPlan: () -> Unit) {
     val context = LocalContext.current
 
     Card(
@@ -62,7 +62,7 @@ fun PlanCard(plan: Plan) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Button(onClick = { /* Acción para seleccionar plan */ }, modifier = Modifier.fillMaxWidth()) {
+            Button(onClick = onSelectPlan , modifier = Modifier.fillMaxWidth()) {
                 Text("Quiero este plan")
             }
 
@@ -70,10 +70,8 @@ fun PlanCard(plan: Plan) {
 
             Button(
                 onClick = {
-                    /*val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/59172726315"))
-                    context.startActivity(intent)*/
                     val message = "Hola, UCB mobile, preciso su ayuda"
-                    val phoneNumber = "59172726315" // sin el '+'
+                    val phoneNumber = "59172726315"
                     val url = "https://wa.me/$phoneNumber?text=${Uri.encode(message)}"
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
 

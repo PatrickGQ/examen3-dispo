@@ -56,6 +56,9 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":framework"))
 
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

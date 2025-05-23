@@ -7,9 +7,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import com.example.examen3.ui.navigation.Routes
 
 @Composable
-fun PlanCarouselScreen(viewModel: PlanCarouselViewModel = hiltViewModel()) {
+fun PlanCarouselScreen(
+    navController: NavHostController,
+    viewModel: PlanCarouselViewModel = hiltViewModel()
+) {
     val plan = viewModel.planes[viewModel.index.value]
 
     Column(
@@ -26,7 +31,6 @@ fun PlanCarouselScreen(viewModel: PlanCarouselViewModel = hiltViewModel()) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Botones de navegación arriba del PlanCard
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -49,6 +53,11 @@ fun PlanCarouselScreen(viewModel: PlanCarouselViewModel = hiltViewModel()) {
             }
         }
 
-        PlanCard(plan)
+        PlanCard(
+            plan = plan,
+            onSelectPlan = {
+                navController.navigate(Routes.ENVIAR_SIM)
+            }
+        )
     }
 }
